@@ -1,7 +1,7 @@
 # MLOps_June2021
 
 ### Our Team
-- Freja Byskov Kristensen (S174464)
+- [Freja Byskov Kristensen](https://github.com/FrejaByskov97) (S174464)
 - [Anna Schibelle](https://github.com/schibsen) (S166154)
 - [Laura Bonde Holst](https://github.com/s173953) (S173953)
 - [Renjue Sun](https://github.com/Renjue823) (S181294)
