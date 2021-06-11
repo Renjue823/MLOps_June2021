@@ -3,7 +3,7 @@ import pytest
 import torch  # to get dataloader
 from torchvision import datasets, transforms
 
-ROOT_PATH =  "~/Documents/MLOps/MLOps_June2021"
+ROOT_PATH = "~/Documents/MLOps/MLOps_June2021"
 DATA_PATH = ROOT_PATH + "/data/processed"
 
 transform = transforms.Compose(
