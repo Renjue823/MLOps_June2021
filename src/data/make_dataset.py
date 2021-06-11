@@ -21,7 +21,7 @@ ROOT_PATH = ""
 DATA_PATH_TRAIN = 'data/raw/train/'
 DATA_PATH_VAL = 'data/raw/val/'
 DATA_PATH_PROC = 'data/processed/'
-@click.command()
+#@click.command()
 #@click.argument('input_filepath', default=ROOT_PATH + '/data/raw', type=click.Path(exists=True))
 #@click.argument('output_filepath', default=ROOT_PATH + '/data/processed', type=click.Path())
 def main(input_filepath=ROOT_PATH+'/data/raw', output_filepath=ROOT_PATH+'/data/processed'):
@@ -30,7 +30,7 @@ def main(input_filepath=ROOT_PATH+'/data/raw', output_filepath=ROOT_PATH+'/data/
         cleaned data ready to be analyzed (saved in ../processed).
     """
     logger = logging.getLogger(__name__)
-    logger.info('making final data set from raw data')
+    logger.info("making final data set from raw data")
 
 
     # Define a transform to normalize the data
@@ -73,5 +73,4 @@ os.chdir(ROOT_PATH)
 main()
 print('-----------------------------')
 #print(len(train))
-
 
