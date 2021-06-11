@@ -23,7 +23,7 @@ When running first time you can creat an environment form the .yml file by runni
 
 
 ### Updating the environment according to environment.yml 
-I have not tried this piece of code yet, but if the environment.yml doesn't hold any packages, exclude --prune
+I have not tried this piece of code yet, but if the environment.yml doesn't have any packages after running the code, exclude --prune and run it again
 
 `$ conda env update --prefix ./env --file environment.yml  --prune`
 
