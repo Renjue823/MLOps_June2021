@@ -8,13 +8,12 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-class NeuralNetwork(nn.Module):
 
+class NeuralNetwork(nn.Module):
     def __init__(self, n_classes):
         super(NeuralNetwork, self).__init__()
-                
-        
-        self.feature_extractor = nn.Sequential(            
+
+        self.feature_extractor = nn.Sequential(
             nn.Conv2d(in_channels=1, out_channels=6, kernel_size=4, stride=1),
             nn.Tanh(),
             nn.AvgPool2d(kernel_size=2),
@@ -22,7 +21,7 @@ class NeuralNetwork(nn.Module):
             nn.Tanh(),
             nn.AvgPool2d(kernel_size=2),
             nn.Conv2d(in_channels=16, out_channels=120, kernel_size=4, stride=1),
-            nn.Tanh()
+            nn.Tanh(),
         )
 
         self.classifier = nn.Sequential(
@@ -31,8 +30,7 @@ class NeuralNetwork(nn.Module):
             nn.Linear(in_features=84, out_features=n_classes),
         )
 
-
-    def forward(self, x, return_feature = False):
+    def forward(self, x, return_feature=False):
         x = self.feature_extractor(x)
         x = torch.flatten(x, 1)
         logits = self.classifier(x)
