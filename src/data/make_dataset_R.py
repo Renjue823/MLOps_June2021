@@ -11,37 +11,19 @@ import numpy as np
 from PIL import Image
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
-<<<<<<< HEAD
-=======
-from torchvision.datasets import ImageFolder
->>>>>>> 8e9862c7fffbec389ef1202ca153a7811dac69b4
 
 # define root path to the repository on your own computer
 ROOT_PATH = '/Users/lee/Downloads/Renjue/MLOps_June2021' 
 
-<<<<<<< HEAD
-@click.command()
-@click.argument('input_filepath', default=ROOT_PATH + '/data/raw', type=click.Path(exists=True))
-@click.argument('output_filepath', default=ROOT_PATH + '/data/processed', type=click.Path())
-=======
-# define root path to the repository on your own computer
-#ROOT_PATH = '/Users/lee/Downloads/Renjue/MLOps_June2021' 
-#ROOT_PATH = 'C:/Users/Freja/MLOps_fork/dtu_mlops/MLOps_June2021/'
-ROOT_PATH = ""
-DATA_PATH_TRAIN = 'data/raw/train/'
-DATA_PATH_VAL = 'data/raw/val/'
-DATA_PATH_PROC = 'data/processed/'
-#@click.command()
-#@click.argument('input_filepath', default=ROOT_PATH + '/data/raw', type=click.Path(exists=True))
-#@click.argument('output_filepath', default=ROOT_PATH + '/data/processed', type=click.Path())
->>>>>>> 8e9862c7fffbec389ef1202ca153a7811dac69b4
+# @click.command()
+# @click.argument('input_filepath', default=ROOT_PATH + '/data/raw', type=click.Path(exists=True))
+# @click.argument('output_filepath', default=ROOT_PATH + '/data/processed', type=click.Path())
 def main(input_filepath=ROOT_PATH+'/data/raw', output_filepath=ROOT_PATH+'/data/processed'):
 
     """ Runs data processing scripts to turn raw data from (../raw) into
         cleaned data ready to be analyzed (saved in ../processed).
     """
     logger = logging.getLogger(__name__)
-<<<<<<< HEAD
     logger.info('making final data set from raw data')
 
     TRAIN_PATH = input_filepath+'/afhq/train'
@@ -53,7 +35,6 @@ def main(input_filepath=ROOT_PATH+'/data/raw', output_filepath=ROOT_PATH+'/data/
     WILD_TRAIN_PATH = TRAIN_PATH+'/wild'
     WILD_TEST_PATH = TEST_PATH+'/wild'
 
-    category_names = ['cat', 'dog','wild']
     train_folder_path = [CAT_TRAIN_PATH, DOG_TRAIN_PATH, WILD_TRAIN_PATH]
     test_folder_path = [CAT_TEST_PATH, DOG_TEST_PATH, WILD_TEST_PATH]
     train_images = []
@@ -97,6 +78,7 @@ def main(input_filepath=ROOT_PATH+'/data/raw', output_filepath=ROOT_PATH+'/data/
         test_set[i] = test_set[i].resize((img_size,img_size), Image.ANTIALIAS)
         test_set[i] = np.asarray(test_set[i])/255
 
+    # acquire label of train_set and test_set
     train_label = np.array([])
     test_label = np.array([])
     for id, num in enumerate(train_images):
@@ -106,83 +88,50 @@ def main(input_filepath=ROOT_PATH+'/data/raw', output_filepath=ROOT_PATH+'/data/
     train_label = train_label.tolist()
     test_label = test_label.tolist()  
 
-    # shape [num of images, 50, 50]
+    # reshape train_set and test_set into [num of images, 50, 50]
     train_set = np.stack(train_set, axis=0)
     print('The shape of training set: {}'.format(train_set.shape))
     test_set = np.stack(test_set, axis=0)
     print('The shape of test set: {}'.format(test_set.shape))
+
     # Define a transform to normalize the data
-    transform = transforms.Compose([transforms.ToPILImage(),
-                                    transforms.ToTensor(),
-                                    transforms.Normalize((0.5, ), (0.5, )),
+    transform = transforms.Compose([transforms.ToTensor(),
+                                    transforms.Normalize((0.5, ), (0.5, )), # greyscale images only have one channel
                                     ])
 
-    train_set = transform(train_set)
-    test_set = transform(test_set)
-    print('One image in training set after transformation: {}'.format(train_set[0]))
-    return train_set, test_set
+    # transform train_set and test_set
+    ls_train = []
+    ls_test = []
+    for i in range(train_set.shape[0]):
+        ls_train.append(transform(train_set[i, :, :]))
+    train_set = torch.stack(ls_train)
+    for i in range(test_set.shape[0]):
+        ls_test.append(transform(test_set[i, :, :]))
+    test_set = torch.stack(ls_test)
+    train_label = torch.FloatTensor(train_label)
+    test_label = torch.FloatTensor(test_label)
 
-train, test = main()
-print('-----------------------------')
-print(len(train))
+    # acquire trainloader and testloader
+    train_loader = torch.utils.data.DataLoader(torch.utils.data.TensorDataset(train_set, train_label), batch_size=64, shuffle=True)
+    test_loader = torch.utils.data.DataLoader(torch.utils.data.TensorDataset(test_set, test_label), batch_size=64, shuffle=True)
 
-
-
-# if __name__ == '__main__':
-#     log_fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-#     logging.basicConfig(level=logging.INFO, format=log_fmt)
-
-#     # not used in this stub but often useful for finding various files
-#     project_dir = Path(__file__).resolve().parents[2]
-
-#     # find .env automagically by walking up directories until it's found, then
-#     # load up the .env entries as environment variables
-#     load_dotenv(find_dotenv())
-
-#     main()
-=======
-    logger.info("making final data set from raw data")
+    return train_loader, test_loader
 
 
-    # Define a transform to normalize the data
-    transformer = transforms.Compose([transforms.Resize(100),
-                                     # transforms.Grayscale(1),
-                                      transforms.ToTensor(),
-                                      transforms.Normalize((0.5, ), (0.5, ))])
-    # define the two dataloaders for the training and validation set 
-    
-    dataloader_train = ImageFolder(root=DATA_PATH_TRAIN, transform=transformer)
-    dataloader_val = ImageFolder(root=DATA_PATH_VAL, transform=transformer)
-    
-    # save the training set and corresponding labels to tensors in processed directory 
-    images = []
-    labels = []
-    for image,label in dataloader_train:
-        #print(y)
-        images.append(image)
-        labels.append(label)
-    images = torch.stack(images, dim=0)
-    labels = torch.FloatTensor(labels)
-    torch.save(images, output_filepath+'/train/images.pt')
-    torch.save(labels, output_filepath+'/train/labels.pt')
-    
-    # save the trvalidation set and corresponding labels to tensors in processed directory 
-    images = []
-    labels = []
-    for image,label in dataloader_val:
-        #print(y)
-        images.append(image)
-        labels.append(label)
-    images = torch.stack(images, dim=0)
-    labels = torch.FloatTensor(labels)
-    torch.save(images, output_filepath+'/val/images.pt')
-    torch.save(labels, output_filepath+'/val/labels.pt')
-        
-    return None # train_set, test_set
-#%%
-os.chdir(ROOT_PATH)
-main()
-print('-----------------------------')
-#print(len(train))
->>>>>>> 8e9862c7fffbec389ef1202ca153a7811dac69b4
+if __name__ == '__main__':
+    log_fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    logging.basicConfig(level=logging.INFO, format=log_fmt)
+
+    # not used in this stub but often useful for finding various files
+    #project_dir = Path(__file__).resolve().parents[2]
+
+    # find .env automagically by walking up directories until it's found, then
+    # load up the .env entries as environment variables
+    load_dotenv(find_dotenv())
+
+    train_loader, test_loader = main()
+    # save train_loader and test_loader to processed data file
+    torch.save(train_loader, ROOT_PATH+'/data/processed/train_loader')
+    torch.save(test_loader, ROOT_PATH+'/data/processed/test_loader')
+
 
