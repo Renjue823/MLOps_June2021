@@ -8,7 +8,7 @@ import os
 ROOT_PATH = "~/Documents/MLOps/MLOps_June2021"
 DATA_PATH = ROOT_PATH + "/data/processed"
 
-if os.path.isdir(DATA_PATH):
+if os.path.isdir(DATA_PATH+"/train"):
     check_data = True
 else:
     check_data = False
