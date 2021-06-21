@@ -36,8 +36,8 @@ def main(input_filepath=ROOT_PATH+'/data/raw', output_filepath=ROOT_PATH+'/data/
 
 
     # Define a transform to normalize the data
-    transformer = transforms.Compose([transforms.Resize(100),
-                                     # transforms.Grayscale(1),
+    transformer = transforms.Compose([transforms.Resize(28),
+                                    #   transforms.Grayscale(1),
                                       transforms.ToTensor(),
                                       transforms.Normalize((0.5, ), (0.5, ))])
     # define the two dataloaders for the training and validation set 
@@ -53,7 +53,7 @@ def main(input_filepath=ROOT_PATH+'/data/raw', output_filepath=ROOT_PATH+'/data/
         images.append(image)
         labels.append(label)
     images = torch.stack(images, dim=0)
-    labels = torch.FloatTensor(labels)
+    labels = torch.LongTensor(labels)
     torch.save(images, output_filepath+'/train/images.pt')
     torch.save(labels, output_filepath+'/train/labels.pt')
     
@@ -65,7 +65,7 @@ def main(input_filepath=ROOT_PATH+'/data/raw', output_filepath=ROOT_PATH+'/data/
         images.append(image)
         labels.append(label)
     images = torch.stack(images, dim=0)
-    labels = torch.FloatTensor(labels)
+    labels = torch.LongTensor(labels)
     torch.save(images, output_filepath+'/val/images.pt')
     torch.save(labels, output_filepath+'/val/labels.pt')
         

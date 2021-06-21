@@ -14,7 +14,7 @@ class NeuralNetwork(nn.Module):
         super(NeuralNetwork, self).__init__()
 
         self.feature_extractor = nn.Sequential(
-            nn.Conv2d(in_channels=1, out_channels=6, kernel_size=4, stride=1),
+            nn.Conv2d(in_channels=3, out_channels=6, kernel_size=4, stride=1),
             nn.Tanh(),
             nn.AvgPool2d(kernel_size=2),
             nn.Conv2d(in_channels=6, out_channels=16, kernel_size=4, stride=1),
