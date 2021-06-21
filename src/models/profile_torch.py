@@ -1,8 +1,9 @@
 '''
-in order to run torch profiler, PyTorch needs to be build with Kineto
+in order to run torch profiler, PyTorch needs to be built with Kineto
 if the following message appears:
     Requested Kineto profiling but Kineto is not available, make sure PyTorch is built with USE_KINETO=1
 you cannot complete the torch profiler
+
 '''
 
 
