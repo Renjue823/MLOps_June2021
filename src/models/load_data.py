@@ -4,7 +4,7 @@ import torch
 import matplotlib.pyplot as plt
 
 # define root path to the repository on your own computer
-ROOT_PATH = 'C:/Users/Laura/Documents/MLOps/MLOps_June2021'
+ROOT_PATH = '/Users/lee/Downloads/Renjue/MLOps_June2021'
 DATA_PATH = ROOT_PATH + "/data/processed"
 
 BATCH_SIZE = 64
@@ -32,3 +32,6 @@ test_loader = torch.utils.data.DataLoader(test_data, batch_size=BATCH_SIZE, shuf
 # print(label[0])
 
 # label: 0 = cat, 1 = dog, 2 = wild
+
+def loader():
+    return train_loader, test_loader

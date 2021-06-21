@@ -7,7 +7,11 @@ from torch import nn, optim
 from torch.utils.tensorboard import SummaryWriter
 import torchvision
 from torchvision import datasets, transforms
-from load_data import train_loader
+from load_data import loader
+import cProfile
+import pstats
+
+train_loader, _ = loader()
 
 # import tensorflow as tf
 
@@ -26,8 +30,13 @@ import pdb
 # 
 writer = SummaryWriter()
 
+
+from dotenv import load_dotenv, find_dotenv
+load_dotenv(find_dotenv())
+# the root path is defined under .env
+ROOT_PATH = os.environ.get("ROOT_PATH")
 # ROOT_PATH = str(pathlib.Path(*pathlib.Path().absolute().parts[:-2]))
-ROOT_PATH = 'C:/Users/Laura/Documents/MLOps/MLOps_June2021' 
+# ROOT_PATH = '/Users/lee/Downloads/Renjue/MLOps_June2021' 
 MODEL_PATH = ROOT_PATH + "/src/models"
 DATA_PATH = ROOT_PATH + "/data/processed"
 
@@ -48,7 +57,7 @@ class Train(object):
         optimizer = optim.Adam(model.parameters(), lr=0.005)
 
         
-        epochs = 20
+        epochs = 20 # 20, set as 1 when running profile
         steps = 0
         train_losses = []
         train_accuracy = 0
@@ -85,3 +94,11 @@ class Train(object):
 
 if __name__ == "__main__":
     Train()
+    
+# read information from cProfile output
+p = pstats.Stats('cProfile_output.txt')
+p.sort_stats('cumulative').print_stats(30)
+
+# visualize information from cProfile output with .prof (run in command line)
+# snakeviz cProfile_visualization.prof
+

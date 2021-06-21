@@ -14,15 +14,15 @@ import matplotlib.image as mpimg
 from torchvision.datasets import ImageFolder
 
 # define root path to the repository on your own computer
-ROOT_PATH = 'C:/Users/Laura/Documents/MLOps/MLOps_June2021' 
+ROOT_PATH = '/Users/lee/Downloads/Renjue/MLOps_June2021' 
 
 # define root path to the repository on your own computer
 #ROOT_PATH = '/Users/lee/Downloads/Renjue/MLOps_June2021' 
 #ROOT_PATH = 'C:/Users/Freja/MLOps_fork/dtu_mlops/MLOps_June2021/'
 # ROOT_PATH = ""
-DATA_PATH_TRAIN = 'data/raw/train/'
-DATA_PATH_VAL = 'data/raw/val/'
-DATA_PATH_PROC = 'data/processed/'
+DATA_PATH_TRAIN = 'data/raw/afhq/train'
+DATA_PATH_VAL = 'data/raw/afhq/val'
+DATA_PATH_PROC = 'data/processed'
 #@click.command()
 #@click.argument('input_filepath', default=ROOT_PATH + '/data/raw', type=click.Path(exists=True))
 #@click.argument('output_filepath', default=ROOT_PATH + '/data/processed', type=click.Path())
