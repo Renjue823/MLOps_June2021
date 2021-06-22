@@ -8,9 +8,14 @@ from torch import nn, optim
 #from torch.utils.tensorboard import SummaryWriter
 import torchvision
 from torchvision import datasets, transforms
+
 import io
 import PIL
 import time
+
+
+# import tensorflow as tf
+
 
 # import torch.nn.functional as F
 import pathlib
@@ -23,9 +28,8 @@ import numpy as np
 import pathlib
 import matplotlib.pyplot as plt
 import pdb
-# pdb.sets_trace()
 
-#writer = SummaryWriter()
+writer = SummaryWriter()
 
 # ROOT_PATH = str(pathlib.Path(*pathlib.Path().absolute().parts[:-2]))
 ROOT_PATH = 'C:/Users/Freja/MLOps_fork/dtu_mlops/MLOps_June2021' 
@@ -45,6 +49,7 @@ class Train(object):
 
         model = NeuralNetwork(n_classes=3)
         criterion = nn.NLLLoss()
+
         optimizer = optim.Adam(model.parameters(), lr=0.001)
 
         x = torch.load(DATA_PATH+"/train/images.pt")
@@ -64,6 +69,7 @@ class Train(object):
         plot_loss = []
         for e in range(epochs):
             running_loss = 0
+
             for images, labels in train_set:
 # =============================================================================
 #                 f, axarr = plt.subplots(4,1)
@@ -76,6 +82,7 @@ class Train(object):
 #                 print(labels[:4])
 #                 time.sleep(5)
 # =============================================================================
+
                 log_ps = model(images)
                 loss = criterion(log_ps, labels)
                 optimizer.zero_grad()
@@ -94,8 +101,8 @@ class Train(object):
                 #writer.add_scalar("Loss/train", train_losses[-1], steps)
                 #writer.add_scalar("Accuracy/train", train_accuracy / steps, steps)
 
-            plot_loss.append(running_loss / len(train_set))
-            print(f"Training loss: {running_loss/len(train_set)}")
+            plot_loss.append(running_loss / len(train_loader))
+            print(f"Training loss: {running_loss/len(train_loader)}")
 
         plt.plot(np.arange(epochs), plot_loss)
         plt.savefig(ROOT_PATH + "/reports/figures/loss.png")
