@@ -2,13 +2,15 @@ import sys
 import argparse
 import os
 
+#import tensorflow as tf
 import torch
 from torch import nn, optim
-from torch.utils.tensorboard import SummaryWriter
+#from torch.utils.tensorboard import SummaryWriter
 import torchvision
 from torchvision import datasets, transforms
-
-# import tensorflow as tf
+import io
+import PIL
+import time
 
 # import torch.nn.functional as F
 import pathlib
@@ -23,13 +25,12 @@ import matplotlib.pyplot as plt
 import pdb
 # pdb.sets_trace()
 
-writer = SummaryWriter()
+#writer = SummaryWriter()
 
 # ROOT_PATH = str(pathlib.Path(*pathlib.Path().absolute().parts[:-2]))
-ROOT_PATH = 'C:/Users/Laura/Documents/MLOps/MLOps_June2021' 
+ROOT_PATH = 'C:/Users/Freja/MLOps_fork/dtu_mlops/MLOps_June2021' 
 MODEL_PATH = ROOT_PATH + "/src/models"
 DATA_PATH = ROOT_PATH + "/data/processed"
-
 
 class Train(object):
     """Helper class that will help launch class methods as commands
@@ -53,9 +54,10 @@ class Train(object):
         for i in range(len(x)):
             train_data.append([x[i], y[i]])
 
-        train_set = torch.utils.data.DataLoader(train_data, batch_size=64, shuffle=False)
+        train_set = torch.utils.data.DataLoader(train_data, batch_size=64, shuffle=True)
+        
 
-        epochs = 5  # 20
+        epochs = 20  # 20
         steps = 0
         train_losses = []
         train_accuracy = 0
@@ -63,6 +65,17 @@ class Train(object):
         for e in range(epochs):
             running_loss = 0
             for images, labels in train_set:
+# =============================================================================
+#                 f, axarr = plt.subplots(4,1)
+#                 print(images[0].shape)
+#                 axarr[0].imshow(images[0].permute(1,2,0))
+#                 axarr[1].imshow(images[1].permute(1,2,0))
+#                 axarr[2].imshow(images[2].permute(1,2,0))
+#                 axarr[3].imshow(images[3].permute(1,2,0))
+#                 plt.show()
+#                 print(labels[:4])
+#                 time.sleep(5)
+# =============================================================================
                 log_ps = model(images)
                 loss = criterion(log_ps, labels)
                 optimizer.zero_grad()
@@ -78,8 +91,8 @@ class Train(object):
                 train_losses.append(loss.item() / 64)
                 train_accuracy += torch.mean(train_equals.type(torch.FloatTensor))
 
-                writer.add_scalar("Loss/train", train_losses[-1], steps)
-                writer.add_scalar("Accuracy/train", train_accuracy / steps, steps)
+                #writer.add_scalar("Loss/train", train_losses[-1], steps)
+                #writer.add_scalar("Accuracy/train", train_accuracy / steps, steps)
 
             plot_loss.append(running_loss / len(train_set))
             print(f"Training loss: {running_loss/len(train_set)}")
@@ -88,7 +101,7 @@ class Train(object):
         plt.savefig(ROOT_PATH + "/reports/figures/loss.png")
         save_results_to = ROOT_PATH + "/reports/figures/"
         torch.save(model.state_dict(), MODEL_PATH + "/trained_models/model_v1.pth")
-
+    
 
 if __name__ == "__main__":
     Train()
