@@ -10,4 +10,24 @@ This could be file where the dataset is automatically fecthed, f.eks. by using u
 Here it is just important to refer to the actual dataset that we used.
 
 
+##### 3. Contiuous integreation (Laura)
+
+##### 4. Profiling (Renjue)
+
+##### 5. Tensorboard (Later)
+
+##### 6. Azure (Freja + Anna)
+
+##### 7. Pytorch lightning (Later Renjue)
+
+##### 8. Data drifting (Anna)
+
+##### 9. Hyperparameters (Laura + Freja)
+
+##### 10. Reproducablity
+
+
+
+
+
 
