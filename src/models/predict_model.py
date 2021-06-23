@@ -52,6 +52,7 @@ class Predict:
         predictions = self.predict(images).squeeze()
         if visualize:
             self.confusion_matrix_AF(pred_labels = predictions, true_labels = true_labels, title = 'Confusion matrix for original val data')
+        
         TP = sum(true_labels.numpy() == predictions)
         acc = TP/len(true_labels)
         return acc
@@ -79,7 +80,8 @@ class Predict:
         plt.tight_layout()
         plt.ylabel('True label')
         plt.xlabel('Predicted label')
-
+        
+        plt.savefig(title +'.jpg')
 
 if __name__ == "__main__":
     images = torch.load(DATA_PATH+"/val/images.pt")
