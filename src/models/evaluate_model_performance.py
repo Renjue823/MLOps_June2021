@@ -16,13 +16,32 @@ os.chdir(ROOT_PATH)
 from src.models.augment_model import Augmentation
 from src.models.predict_model import Predict 
 
+import numpy as np 
+import matplotlib.pyplot as plt 
+
 acc_aug = Augmentation().evaluate_prediction( method = 'geometry')
 acc_orig = Predict().evaluate_prediction()
 
 acc_noise = Augmentation().evaluate_prediction(method = 'noise', std = 1, mean = 0)
 
 #%%
-import numpy as np 
+
+img, img_noise, img_aug  = Augmentation().Augment_images(method = ['geometry', 'noise'])
+
+plt.figure()
+plt.imshow(img.permute(1,2,0))
+plt.show()
+plt.savefig('reports/figures/original_image.png')
+
+plt.imshow(img_noise.permute(1,2,0))
+plt.show()
+plt.savefig('reports/figures/noisy_image.png')
+
+plt.imshow(img_aug.permute(1,2,0))
+plt.show()
+plt.savefig('reports/figures/augmented_image.png')
+
+#%% create plot for what influence white noise has on 
 acc_noise = []
 std1 = np.arange(0.001,0.1,0.009)
 std2 = np.arange(0.1,1,0.05)
@@ -36,7 +55,6 @@ for i in stds:
 
 #%%
 
-import matplotlib.pyplot as plt 
 fig = plt.figure()
 p = plt.plot(stds, acc_noise)
 plt.hlines(acc_orig, 0, max(stds), 'r', '--')
@@ -49,3 +67,4 @@ plt.title('performance(accuracy) of the model on noise data')
 plt.xlabel('std for gaussian noise')
 plt.ylabel('accuracy')
 
+plt.savefig('noise_accuracy.jpg')

@@ -32,7 +32,7 @@ class Augmentation(nn.Module):
 
         self.augmentation = nn.Sequential(
                                    K.augmentation.RandomAffine(360),
-                                   K.augmentation.ColorJitter(0.2, 0.3, 0.2, 0.3)   
+                                   #K.augmentation.ColorJitter(0.2, 0.3, 0.2, 0.3)   
                                 )
         
         #self.Augment_images()
@@ -59,6 +59,11 @@ class Augmentation(nn.Module):
             new_tensor = self.noise_model(images, std, mean)#, std, mean)
         elif method == 'geometry': 
             new_tensor = self.augmentation(images)
+        elif len(method) == 2:
+            image = images[0]
+            new_tensor_noise = self.noise_model(image, std, mean)#, std, mean)
+            new_tensor_aug = self.augmentation(image).squeeze()
+            return image, new_tensor_noise, new_tensor_aug
         
         torch.save(new_tensor,ROOT_PATH +'/data/processed/val/'+ method + '_images.pt')
         torch.save(labels, ROOT_PATH + '/data/processed/val/'+ method + '_labels.pt')

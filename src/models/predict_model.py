@@ -81,7 +81,7 @@ class Predict:
         plt.ylabel('True label')
         plt.xlabel('Predicted label')
         
-        plt.savefig(title +'.jpg')
+        plt.savefig('reports/figures/' + title +'.jpg')
 
 if __name__ == "__main__":
     images = torch.load(DATA_PATH+"/val/images.pt")
