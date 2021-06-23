@@ -69,8 +69,7 @@ class datadrifting():
         fig, axs = pyplot.subplots()
         axs.scatter(base_embedded[:, 0], base_embedded[:, 1], s=2, c='r')
         axs.scatter(features_embedded[:, 0], features_embedded[:, 1], s=4)
-        axs.title(f'score {score:.2f} p-value.item() {p_val:.2f}')
-        axs.show()
+        axs.set_title(f'score {score:.2f} p-value.item() {p_val:.2f}')
         return axs
         
     def evaluate_detector(self, kernel = 'gaussian', corruption_function = None):
