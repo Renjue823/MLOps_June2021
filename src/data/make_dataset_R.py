@@ -56,7 +56,7 @@ def main(input_filepath=ROOT_PATH+'/data/raw', output_filepath=ROOT_PATH+'/data/
 
     for i in range(len(train_set)):
         if i < train_images[0]:
-            train_set[i] = Image.open(train_folder_path[0]+'/'+train_set[i]).convert("L") # converting grey scale 
+            train_set[i] = Image.open(train_folder_path[0]+'/'+train_set[i]).convert("L")
         elif train_images[0] <= i < train_images[0]+train_images[1]:
             train_set[i] = Image.open(train_folder_path[1]+'/'+train_set[i]).convert("L")
         else:
@@ -70,7 +70,7 @@ def main(input_filepath=ROOT_PATH+'/data/raw', output_filepath=ROOT_PATH+'/data/
             test_set[i] = Image.open(test_folder_path[2]+'/'+test_set[i]).convert("L")
 
     # resize images
-    img_size = 50
+    img_size = 56
     for i in range(len(train_set)):
         train_set[i] = train_set[i].resize((img_size,img_size), Image.ANTIALIAS)
         train_set[i] = np.asarray(train_set[i])/255

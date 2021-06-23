@@ -30,9 +30,9 @@ images, labels = iter(test_loader).next()
 print('The true label of one image:{}'.format(labels[0]))
 
 example_image = images[0]
-image =  images[0].unsqueeze(0) # add one dimension to the image [1, 3, 28, 28]
+image =  images[0].unsqueeze(0) # add one dimension to the image [1, 3, 56, 56]
 pre = model(image)
-print('The predicted label of one image:{}'.format(pre))
+print('The predicted label of one image:{}'.format(pre[0, :]))
 
 # script model with TorchScript
 script_model = torch.jit.script(model)
@@ -46,12 +46,12 @@ torch-model-archiver --model-name Animal_Classifier --version 1.0 --serialized-f
 '''
 Model Deployment
 torchserve --start --ncs --model-store /Users/lee/Downloads/Renjue/MLOps_June2021/model_store --models Animal_Classifier=Animal_Classifier.mar
-curl http://127.0.0.1:8080/predictions/Animal_Classifier -T my_image.jpg
+curl http://127.0.0.1:8080/predictions/Animal_Classifier -T cat_1.jpg
 (my_image.jpg should be an image stored under model_store directory)
 '''
 # save one example image as tensor 
 torch.save(image, '/Users/lee/Downloads/Renjue/MLOps_June2021/model_store/tensor.pt')
 # show the example image
-plt.imshow(example_image.permute(1, 2, 0))
-plt.show()
+# plt.imshow(example_image.permute(1, 2, 0))
+# plt.show()
 

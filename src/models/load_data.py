@@ -33,5 +33,14 @@ test_loader = torch.utils.data.DataLoader(test_data, batch_size=BATCH_SIZE, shuf
 
 # label: 0 = cat, 1 = dog, 2 = wild
 
+# function to acquire train_loader and test_loader
 def loader():
     return train_loader, test_loader
+
+
+#show an example of resized image and its label
+# image, label = iter(train_loader).next()
+# plt.imshow(image[0].permute(1, 2, 0))
+# plt.show()
+# #plt.savefig(fig, '01.jpg')
+# print(label[0])

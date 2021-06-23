@@ -29,7 +29,7 @@ unscripted_model = model
 #scripted_model = torch.load(ROOT_PATH+'/model_store/deployable_model.pt')
 scripted_model = torch.jit.script(model)
 
-input = torch.randn(1,3,28,28)
+input = torch.randn(1,3,56,56)
 unscripted_output = unscripted_model(input)
 scripted_output = scripted_model(input)
 

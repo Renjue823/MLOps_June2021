@@ -81,7 +81,6 @@ class Train(object):
 
                 writer.add_scalar("Loss/train", train_losses[-1], steps)
                 writer.add_scalar("Accuracy/train", train_accuracy / steps, steps)
-                print(train_accuracy / steps)
 
             plot_loss.append(running_loss / len(train_loader))
             print(f"Training loss: {running_loss/len(train_loader)}")
