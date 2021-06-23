@@ -36,7 +36,7 @@ def main(input_filepath=ROOT_PATH+'/data/raw', output_filepath=ROOT_PATH+'/data/
 
 
     # Define a transform to normalize the data
-    transformer = transforms.Compose([transforms.Resize(28),
+    transformer = transforms.Compose([transforms.Resize(28*2),
                                     #   transforms.Grayscale(1),
                                       transforms.ToTensor(),
                                       transforms.Normalize((0.5, ), (0.5, ))])

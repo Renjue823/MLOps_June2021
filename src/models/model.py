@@ -30,12 +30,25 @@ class NeuralNetwork(nn.Module):
             nn.Linear(in_features=84, out_features=n_classes),
         )
 
-    def forward(self, x, return_feature=False):
+    # def forward(self, x, return_feature=False):
+    #     x = self.feature_extractor(x)
+    #     x = torch.flatten(x, 1)
+    #     logits = self.classifier(x)
+    #     probs = F.log_softmax(logits, dim=1)
+    #     if return_feature:
+    #         return x
+    #     else:
+    #         return probs
+
+    def forward(self, x):
         x = self.feature_extractor(x)
         x = torch.flatten(x, 1)
         logits = self.classifier(x)
         probs = F.log_softmax(logits, dim=1)
-        if return_feature:
-            return x
-        else:
-            return probs
+        ps = torch.exp(probs)
+        _, top_class = ps.topk(1, dim=1)
+        if top_class.shape == torch.Size([1, 1]):
+            top_class = top_class[0, 0]
+            return top_class
+        else: 
+            return top_class
