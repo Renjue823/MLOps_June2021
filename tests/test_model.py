@@ -6,7 +6,7 @@ from src.models.model import NeuralNetwork
 
 def test_model_output():
     model = NeuralNetwork(n_classes=3)
-    assert model.forward(torch.zeros((100, 3, 28, 28))).shape == torch.Size((100, 3))
+    assert model.forward(torch.zeros((10, 3, 28, 28))).shape == torch.Size((10, 3))
 
 def test_probs_size():
     model = NeuralNetwork(n_classes=3)

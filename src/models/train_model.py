@@ -1,33 +1,18 @@
-import sys
-import argparse
 import os
-
 import torch
 from torch import nn, optim
-from torch.utils.tensorboard import SummaryWriter
-import torchvision
-from torchvision import datasets, transforms
-from load_data import train_loader
-
-# import tensorflow as tf
-
-# import torch.nn.functional as F
-import pathlib
-
-os.chdir(pathlib.Path().absolute())
-
-from model import NeuralNetwork
 
 import numpy as np
 import pathlib
 import matplotlib.pyplot as plt
-import pdb
-# pdb.set_trace()
-# 
-writer = SummaryWriter()
 
-# ROOT_PATH = str(pathlib.Path(*pathlib.Path().absolute().parts[:-2]))
-ROOT_PATH = 'C:/Users/Laura/Documents/MLOps/MLOps_June2021' 
+os.chdir(pathlib.Path().absolute())
+
+from model import NeuralNetwork
+from load_data import Train_loader, Test_loader
+import pathlib
+
+ROOT_PATH = 'C:/Users/Freja/MLOps_fork/dtu_mlops/MLOps_June2021' 
 MODEL_PATH = ROOT_PATH + "/src/models"
 DATA_PATH = ROOT_PATH + "/data/processed"
 
@@ -36,25 +21,24 @@ class Train(object):
     """Helper class that will help launch class methods as commands
     from a single script
     """
-
     def __init__(self):
         self.train()
 
     def train(self):
         print("training")
-
+        train_loader = Train_loader(64)
         model = NeuralNetwork(n_classes=3)
         criterion = nn.NLLLoss()
-        optimizer = optim.Adam(model.parameters(), lr=0.005)
-
-        
+        optimizer = optim.Adam(model.parameters(), lr=0.001)       
         epochs = 20
+
         steps = 0
         train_losses = []
         train_accuracy = 0
         plot_loss = []
         for e in range(epochs):
             running_loss = 0
+
             for images, labels in train_loader:
                 log_ps = model(images)
                 loss = criterion(log_ps, labels)
@@ -71,17 +55,24 @@ class Train(object):
                 train_losses.append(loss.item() / 64)
                 train_accuracy += torch.mean(train_equals.type(torch.FloatTensor))
 
-                writer.add_scalar("Loss/train", train_losses[-1], steps)
-                writer.add_scalar("Accuracy/train", train_accuracy / steps, steps)
-
             plot_loss.append(running_loss / len(train_loader))
             print(f"Training loss: {running_loss/len(train_loader)}")
+        test_loader = Test_loader(64)
+        correct = 0
+        total = 0
+        for images, labels in test_loader:
+            outputs = model(images)
+            predictions = torch.max(outputs, 1)[1]
+            correct += (predictions == labels).sum()
+        
+            total += len(labels)
+        accuracy = correct / total
+        print(accuracy)
 
         plt.plot(np.arange(epochs), plot_loss)
         plt.savefig(ROOT_PATH + "/reports/figures/loss.png")
-        save_results_to = ROOT_PATH + "/reports/figures/"
         torch.save(model.state_dict(), MODEL_PATH + "/trained_models/model_v1.pth")
-
+    
 
 if __name__ == "__main__":
     Train()
