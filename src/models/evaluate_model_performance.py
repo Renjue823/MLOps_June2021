@@ -20,10 +20,7 @@ import numpy as np
 import matplotlib.pyplot as plt 
 
 acc_aug = Augmentation().evaluate_prediction( method = 'geometry')
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
 acc_orig = Predict().evaluate_prediction()
 
 acc_noise = Augmentation().evaluate_prediction(method = 'noise', std = 1, mean = 0)
