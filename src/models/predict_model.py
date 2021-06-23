@@ -52,7 +52,8 @@ class Predict:
         predictions = self.predict(images).squeeze()
         if visualize:
             self.confusion_matrix_AF(pred_labels = predictions, true_labels = true_labels, title = 'Confusion matrix for original val data')
-        acc = accuracy_score(true_labels, predictions)
+        TP = sum(true_labels.numpy() == predictions)
+        acc = TP/len(true_labels)
         return acc
     
     # Confusion matrix for animal faces

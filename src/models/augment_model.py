@@ -83,8 +83,7 @@ class Augmentation(nn.Module):
             Predict().confusion_matrix_AF(pred_labels = predictions_aug,
                                           true_labels = true_labels,
                                           title = 'Confusion matrix for ' + method+ ' augmented data')
-            
-        acc = accuracy_score(true_labels, predictions_aug)
-        
+        TP = sum(true_labels.numpy() == predictions_aug)
+        acc = TP/len(true_labels)
         return acc
     
