@@ -1,28 +1,11 @@
-
-import sys
-import argparse
 import os
-
 import torch
-
-# from torch import nn, optim
-# import torchvision
-from torchvision import datasets, transforms
-
-# import torch.nn.functional as F
 import pathlib
 
 os.chdir(pathlib.Path().absolute())
 
-
 from model import NeuralNetwork
-
-# import numpy as np
 import pathlib
-
-# import matplotlib.pyplot as plt
-# import plotext.plot as plx
-
 
 ROOT_PATH = 'C:/Users/Laura/Documents/MLOps/MLOps_June2021' 
 MODEL_PATH = ROOT_PATH + "/src/models/trained_models"
