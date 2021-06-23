@@ -42,7 +42,4 @@ class NeuralNetwork(nn.Module):
         x = torch.flatten(x, 1)
         logits = self.classifier(x)
         probs = F.log_softmax(logits, dim=1)
-        if return_feature:
-            return x
-        else:
-            return probs
+        return probs
