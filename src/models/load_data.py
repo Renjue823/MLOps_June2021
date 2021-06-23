@@ -11,15 +11,16 @@ ROOT_PATH = os.environ.get("ROOT_PATH")
 os.chdir(ROOT_PATH)
 DATA_PATH = ROOT_PATH + "/data/processed"
 
-BATCH_SIZE = 64
-
 # Load train data
 x = torch.load(DATA_PATH+"/train/images.pt")
 y = torch.load(DATA_PATH+"/train/labels.pt")
 train_data = []
 for i in range(len(x)):
     train_data.append([x[i], y[i]])
-train_loader = torch.utils.data.DataLoader(train_data, batch_size=BATCH_SIZE, shuffle=True)
+
+def Train_loader(BATCH_SIZE):
+    train_loader = torch.utils.data.DataLoader(train_data, batch_size=BATCH_SIZE, shuffle=True)
+    return train_loader
 
 # Load test data
 x = torch.load(DATA_PATH+"/val/images.pt")
@@ -27,7 +28,11 @@ y = torch.load(DATA_PATH+"/val/labels.pt")
 test_data = []
 for i in range(len(x)):
     test_data.append([x[i], y[i]])
-test_loader = torch.utils.data.DataLoader(test_data, batch_size=BATCH_SIZE, shuffle=True)
+
+
+def Test_loader(BATCH_SIZE):
+    test_loader = torch.utils.data.DataLoader(test_data, batch_size=BATCH_SIZE, shuffle=False)
+    return test_loader
 
 # show an example of resized image and its label
 # image, label = iter(train_loader).next()
@@ -35,4 +40,6 @@ test_loader = torch.utils.data.DataLoader(test_data, batch_size=BATCH_SIZE, shuf
 # plt.show()
 # print(label[0])
 
+
 # label: 0 = cat, 1 = dog, 2 = wild
+

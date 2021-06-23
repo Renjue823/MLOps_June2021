@@ -15,10 +15,10 @@ DATA_PATH_PROC = os.environ.get("DATA_PATH_PROC")
 import torch
 import torch.nn as nn
 
-from src.models.load_data import test_loader
+#from src.models.load_data import Test_loader
 from src.models.predict_model import Predict
 import kornia as K
-
+from skimage.util import random_noise
 import matplotlib.pyplot as plt
 import numpy as np
 import itertools
