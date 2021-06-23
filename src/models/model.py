@@ -33,7 +33,7 @@ class NeuralNetwork(nn.Module):
         )
 
 
-    def forward(self, x, return_feature=False):
+    def forward(self, x):
         x = self.feature_extractor(x)
         x = torch.flatten(x, 1)
         logits = self.classifier(x)
