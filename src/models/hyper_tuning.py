@@ -5,15 +5,20 @@ import torch
 from torch.utils.data import DataLoader, random_split
 import optuna
 from torch import nn, optim
-from load_data import train_loader, test_loader
+import load_data
 from model import NeuralNetwork
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 def objective(trial):
-    lr = trial.suggest_discrete_uniform("lr", 0.000001, 0.1, 0.001)
-    n_neurons = trial.suggest_int("n_neurons", 3, 120, 10)
+    lr = trial.suggest_discrete_uniform("lr", 0.00001, 0.001, 0.00001)
+    n_neurons = trial.suggest_int("n_neurons", 3, 120, 5)
+    epochs = trial.suggest_int("epochs", 5, 40, 1)
+    batch_size = trial.suggest_int("batch_size", 1, 124, 1)
 
+
+    train_loader = load_data.load_train(batch_size)
+    test_loader = load_data.load_test(batch_size)
     # train_data, val_data = random_split(train_data,[13167,1463]) # 90%, 10% 
 
     # train_loader = DataLoader(train_data, batch_size=64)
@@ -23,14 +28,18 @@ def objective(trial):
     criterion = nn.NLLLoss()
     optimizer = optim.Adam(model.parameters(), lr=lr)
 
-    for batch_idx, (images, labels) in enumerate(train_loader):
-        # print(f'Batch id: {batch_idx}')
-        log_ps = model(images)
-        loss = criterion(log_ps, labels)
-        optimizer.zero_grad()
-        loss.backward()
-        optimizer.step()
+    for e in range(epochs):
+        # print(f'Running epoch {e}')
+        running_loss = 0
 
+        for batch_idx, (images, labels) in enumerate(train_loader):
+            # print(f'Batch id: {batch_idx}')
+            log_ps = model(images)
+            loss = criterion(log_ps, labels)
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+            running_loss += loss.item()
 
         correct = 0
         total = 0
@@ -43,12 +52,13 @@ def objective(trial):
             correct += (predictions == val_labels).sum()
         
             total += len(val_labels)
-        
+            
         accuracy = correct / total 
-        trial.report(accuracy, batch_idx)
+        trial.report(accuracy, e)
 
         if trial.should_prune():
             raise optuna.TrialPruned()
+        
 
     for images, labels in test_loader:
         images, labels = images.to(device), labels.to(device)
@@ -65,16 +75,15 @@ def objective(trial):
 
 
 if __name__ == "__main__":
-    
-    sampler = optuna.samplers.TPESampler(seed=10)
+    sampler = optuna.samplers.TPESampler(seed=5)
     study = optuna.create_study(
         direction='maximize', 
         pruner=optuna.pruners.MedianPruner(
-                n_startup_trials=3, n_warmup_steps=10, interval_steps=10), 
+                n_startup_trials=3, n_warmup_steps=5, interval_steps=5), 
         sampler = sampler
         )
     
-    study.optimize(objective, n_trials=3) 
+    study.optimize(objective, n_trials=100) 
 
     fig = optuna.visualization.plot_intermediate_values(study)
     fig.show()
