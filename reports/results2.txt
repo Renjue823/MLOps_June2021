@@ -1,0 +1,53 @@
+[I 2021-06-23 10:25:05,353] A new study created in memory with name: no-name-7417a235-176e-4c66-930e-d89fddb08baa
+C:\Users\Laura\Anaconda3\envs\mlops_project\lib\site-packages\optuna\distributions.py:560: UserWarning: The distribution is specified by [3, 120] and step=5, but the range is not divisible by `step`. It will be replaced by [3, 118].
+  warnings.warn(
+[I 2021-06-23 10:28:44,579] Trial 0 finished with value: 0.8700000047683716 and parameters: {'lr': 0.00023, 'n_neurons': 103, 'epochs': 12, 'batch_size': 114}. Best is trial 0 with value: 0.8700000047683716.
+[I 2021-06-23 10:39:40,813] Trial 1 finished with value: 0.9166666865348816 and parameters: {'lr': 0.0004900000000000001, 'n_neurons': 73, 'epochs': 32, 'batch_size': 65}. Best is trial 1 with value: 0.9166666865348816.
+[I 2021-06-23 10:41:56,331] Trial 2 finished with value: 0.8619999885559082 and parameters: {'lr': 0.00030000000000000003, 'n_neurons': 23, 'epochs': 7, 'batch_size': 92}. Best is trial 1 with value: 0.9166666865348816.
+[I 2021-06-23 10:59:18,328] Trial 3 finished with value: 0.921999990940094 and parameters: {'lr': 0.00045000000000000004, 'n_neurons': 18, 'epochs': 36, 'batch_size': 34}. Best is trial 3 with value: 0.921999990940094.
+[I 2021-06-23 11:02:53,184] Trial 4 pruned.
+[I 2021-06-23 11:11:25,764] Trial 5 finished with value: 0.9126666784286499 and parameters: {'lr': 0.0006000000000000001, 'n_neurons': 33, 'epochs': 15, 'batch_size': 32}. Best is trial 3 with value: 0.921999990940094.
+[I 2021-06-23 11:13:22,857] Trial 6 pruned.
+[I 2021-06-23 11:15:23,559] Trial 7 finished with value: 0.906000018119812 and parameters: {'lr': 0.0009700000000000002, 'n_neurons': 23, 'epochs': 5, 'batch_size': 26}. Best is trial 3 with value: 0.921999990940094.
+[I 2021-06-23 11:17:15,724] Trial 8 finished with value: 0.8833333253860474 and parameters: {'lr': 0.0007000000000000001, 'n_neurons': 93, 'epochs': 5, 'batch_size': 72}. Best is trial 3 with value: 0.921999990940094.
+[I 2021-06-23 11:24:52,936] Trial 9 pruned.
+[I 2021-06-23 11:37:49,177] Trial 10 finished with value: 0.9313333630561829 and parameters: {'lr': 0.0008500000000000001, 'n_neurons': 3, 'epochs': 40, 'batch_size': 41}. Best is trial 10 with value: 0.9313333630561829.
+[I 2021-06-23 11:44:27,495] Trial 11 pruned.
+[I 2021-06-23 11:57:10,137] Trial 12 finished with value: 0.9240000247955322 and parameters: {'lr': 0.0007700000000000001, 'n_neurons': 3, 'epochs': 40, 'batch_size': 35}. Best is trial 10 with value: 0.9313333630561829.
+[I 2021-06-23 11:59:02,832] Trial 13 pruned.
+[I 2021-06-23 12:06:47,899] Trial 14 finished with value: 0.921999990940094 and parameters: {'lr': 0.00098, 'n_neurons': 48, 'epochs': 20, 'batch_size': 15}. Best is trial 10 with value: 0.9313333630561829.
+[I 2021-06-23 12:17:30,108] Trial 15 finished with value: 0.9293333292007446 and parameters: {'lr': 0.0008400000000000001, 'n_neurons': 3, 'epochs': 35, 'batch_size': 50}. Best is trial 10 with value: 0.9313333630561829.
+[I 2021-06-23 12:28:07,892] Trial 16 finished with value: 0.9173333048820496 and parameters: {'lr': 0.0009000000000000001, 'n_neurons': 3, 'epochs': 35, 'batch_size': 52}. Best is trial 10 with value: 0.9313333630561829.
+[I 2021-06-23 12:29:54,826] Trial 17 pruned.
+[I 2021-06-23 12:33:46,959] Trial 18 pruned.
+[I 2021-06-23 12:35:46,558] Trial 19 pruned.
+[I 2021-06-23 12:48:06,873] Trial 20 finished with value: 0.9233333468437195 and parameters: {'lr': 0.001, 'n_neurons': 13, 'epochs': 33, 'batch_size': 18}. Best is trial 10 with value: 0.9313333630561829.
+[I 2021-06-23 13:04:05,140] Trial 21 finished with value: 0.9313333630561829 and parameters: {'lr': 0.0008, 'n_neurons': 3, 'epochs': 40, 'batch_size': 42}. Best is trial 10 with value: 0.9313333630561829.
+[I 2021-06-23 13:15:41,443] Trial 22 finished with value: 0.9173333048820496 and parameters: {'lr': 0.0008600000000000001, 'n_neurons': 13, 'epochs': 38, 'batch_size': 45}. Best is trial 10 with value: 0.9313333630561829.
+[I 2021-06-23 13:19:05,520] Trial 23 pruned.
+[I 2021-06-23 13:30:32,317] Trial 24 finished with value: 0.9240000247955322 and parameters: {'lr': 0.0009200000000000001, 'n_neurons': 3, 'epochs': 37, 'batch_size': 42}. Best is trial 10 with value: 0.9313333630561829.
+[I 2021-06-23 13:40:50,706] Trial 25 finished with value: 0.9226666688919067 and parameters: {'lr': 0.0008300000000000001, 'n_neurons': 13, 'epochs': 33, 'batch_size': 60}. Best is trial 10 with value: 0.9313333630561829.
+[I 2021-06-23 13:49:27,463] Trial 26 finished with value: 0.9253333210945129 and parameters: {'lr': 0.0007100000000000001, 'n_neurons': 28, 'epochs': 23, 'batch_size': 17}. Best is trial 10 with value: 0.9313333630561829.
+[I 2021-06-23 14:02:51,481] Trial 27 finished with value: 0.9259999990463257 and parameters: {'lr': 0.0009500000000000001, 'n_neurons': 48, 'epochs': 38, 'batch_size': 84}. Best is trial 10 with value: 0.9313333630561829.
+[I 2021-06-23 15:26:33,835] Trial 28 finished with value: 0.9133333563804626 and parameters: {'lr': 0.0006500000000000001, 'n_neurons': 8, 'epochs': 27, 'batch_size': 25}. Best is trial 10 with value: 0.9313333630561829.
+[I 2021-06-23 15:28:30,767] Trial 29 pruned.
+[I 2021-06-23 15:30:26,824] Trial 30 pruned.
+[I 2021-06-23 15:32:31,384] Trial 31 pruned.
+[I 2021-06-23 15:34:24,245] Trial 32 pruned.
+[I 2021-06-23 15:39:10,936] Trial 33 pruned.
+[I 2021-06-23 15:41:04,330] Trial 34 pruned.
+[I 2021-06-23 15:44:28,941] Trial 35 pruned.
+[I 2021-06-23 15:46:20,113] Trial 36 pruned.
+[I 2021-06-23 15:48:19,295] Trial 37 pruned.
+[I 2021-06-23 15:50:07,001] Trial 38 pruned.
+[I 2021-06-23 15:59:43,530] Trial 39 finished with value: 0.9240000247955322 and parameters: {'lr': 0.0007400000000000001, 'n_neurons': 28, 'epochs': 32, 'batch_size': 66}. Best is trial 10 with value: 0.9313333630561829.
+[I 2021-06-23 16:01:28,952] Trial 40 pruned.
+[I 2021-06-23 16:10:45,467] Trial 41 finished with value: 0.918666660785675 and parameters: {'lr': 0.00068, 'n_neurons': 43, 'epochs': 25, 'batch_size': 11}. Best is trial 10 with value: 0.9313333630561829.
+[I 2021-06-23 16:12:37,948] Trial 42 pruned.
+[I 2021-06-23 16:14:35,390] Trial 43 pruned.
+[I 2021-06-23 16:19:06,418] Trial 44 finished with value: 0.9146666526794434 and parameters: {'lr': 0.0007300000000000001, 'n_neurons': 23, 'epochs': 14, 'batch_size': 24}. Best is trial 10 with value: 0.9313333630561829.
+[I 2021-06-23 16:26:00,830] Trial 45 finished with value: 0.9120000004768372 and parameters: {'lr': 0.0007500000000000001, 'n_neurons': 33, 'epochs': 23, 'batch_size': 48}. Best is trial 10 with value: 0.9313333630561829.
+[I 2021-06-23 16:27:53,561] Trial 46 pruned.
+[I 2021-06-23 16:34:00,472] Trial 47 finished with value: 0.9213333129882812 and parameters: {'lr': 0.00068, 'n_neurons': 8, 'epochs': 20, 'batch_size': 57}. Best is trial 10 with value: 0.9313333630561829.
+[I 2021-06-23 16:35:52,692] Trial 48 pruned.
+[I 2021-06-23 16:48:56,376] Trial 49 finished with value: 0.9153333306312561 and parameters: {'lr': 0.0009500000000000001, 'n_neurons': 18, 'epochs': 39, 'batch_size': 21}. Best is trial 10 with value: 0.9313333630561829.
