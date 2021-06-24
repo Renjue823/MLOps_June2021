@@ -13,32 +13,36 @@ from torchvision import datasets, transforms
 import pathlib
 
 os.chdir(pathlib.Path().absolute())
-
-
 from model import NeuralNetwork
-
-# import numpy as np
 import pathlib
-
-# import matplotlib.pyplot as plt
-# import plotext.plot as plx
-
+from load_data import load_test
 
 ROOT_PATH = 'C:/Users/Laura/Documents/MLOps/MLOps_June2021' 
 MODEL_PATH = ROOT_PATH + "/src/models/trained_models"
 DATA_PATH = ROOT_PATH + "/data/processed"
 
 
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
+parameters = {
+    'lr': 800*10e-6,
+    'batch_size': 20, 
+    'epochs': 18, 
+    'n_neurons': 50
+}
+
 class Predict:
     """Helper class that will help launch class methods as commands
     from a single script
     """
 
-    def __init__(self, images):
-        self.predict(images)
+    # def __init__(self, images):
+    #     # self.predict(images)
 
     def predict(self, images):
-        model = NeuralNetwork(3)
+        
+
+        model = NeuralNetwork(n_classes=3, n_neurons=parameters['n_neurons'])
         dict_ = torch.load(MODEL_PATH+"/model_v1.pth")
         model.load_state_dict(dict_)
         predictions = []
@@ -47,7 +51,7 @@ class Predict:
             ps = torch.exp(model(images))
             _, top_class = ps.topk(1, dim=1)
             predictions.append(top_class.numpy())
-        self.get_accuracy(predictions)
+        # self.get_accuracy(predictions)
         return predictions
 
     def get_accuracy(self,y_hat):
@@ -59,18 +63,33 @@ class Predict:
 
 
 if __name__ == "__main__":
-    images = torch.load(DATA_PATH+"/val/images.pt")
-    y = torch.load(DATA_PATH+"/val/labels.pt")
-    y_hat = Predict(images)
-    # Predict.get_accuracy(y_hat)
+    
+#     
+#     # y_hat = Predict()
 
+# # =============================================================================
+# # transform = transforms.Compose([transforms.ToTensor(),
+# #                                 transforms.Normalize((0.5,), (0.5,))])
+# # test_set = datasets.MNIST('~Freja/MLOps_fork/dtu_mlops/02_code_organisation/CodeOrganisation/data/processed', download=True, train=False, transform=transform)
+# # test_set = torch.utils.data.DataLoader(test_set, batch_size=16, shuffle=False)
+# #
+#     images, labels = next(iter(test_loader))
+#     x = Predict(images).predict(images)
+#     print(x)
 # =============================================================================
-# transform = transforms.Compose([transforms.ToTensor(),
-#                                 transforms.Normalize((0.5,), (0.5,))])
-# test_set = datasets.MNIST('~Freja/MLOps_fork/dtu_mlops/02_code_organisation/CodeOrganisation/data/processed', download=True, train=False, transform=transform)
-# test_set = torch.utils.data.DataLoader(test_set, batch_size=16, shuffle=False)
-#
-# images, labels = next(iter(test_set))
-# x = Predict(images).predict(images)
-# print(x)
-# =============================================================================
+
+    test_loader = load_test(batch_size=parameters['batch_size'])
+    correct, total = 0,0
+    for images, labels in test_loader:
+        images, labels = images.to(device), labels.to(device)
+
+        outputs = torch.tensor(Predict().predict(images))
+
+        predictions = torch.max(outputs, 1)[1].to(device)
+        correct += (outputs == labels).sum()
+
+        total += len(labels)
+
+    accuracy = correct / total 
+    print(correct)
+    print(accuracy)

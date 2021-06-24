@@ -83,7 +83,7 @@ if __name__ == "__main__":
         sampler = sampler
         )
     
-    study.optimize(objective, n_trials=100) 
+    study.optimize(objective, n_trials=50) 
 
     fig = optuna.visualization.plot_intermediate_values(study)
     fig.show()

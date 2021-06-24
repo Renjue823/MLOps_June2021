@@ -14,7 +14,7 @@ import matplotlib.image as mpimg
 from torchvision.datasets import ImageFolder
 
 # define root path to the repository on your own computer
-ROOT_PATH = 'C:/Users/Freja/MLOps_fork/dtu_mlops/MLOps_June2021'  
+ROOT_PATH = 'C:/Users/Laura/Documents/MLOps/MLOps_June2021'  
 
 # define root path to the repository on your own computer
 #ROOT_PATH = '/Users/lee/Downloads/Renjue/MLOps_June2021' 
@@ -50,11 +50,11 @@ def main(input_filepath=ROOT_PATH+'/data/raw', output_filepath=ROOT_PATH+'/data/
     labels = []
     count = 0
     for image,label in dataloader_train:
-        if count < 6000:
+        # if count < 6000:
             #print(y)
-            images.append(image)
-            labels.append(label)
-            count += 1
+        images.append(image)
+        labels.append(label)
+        count += 1
     images = torch.stack(images, dim=0)
     labels = torch.LongTensor(labels)
     torch.save(images, output_filepath+'/train/images.pt')
