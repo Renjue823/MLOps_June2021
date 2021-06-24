@@ -24,7 +24,7 @@ class Predict:
 
     def __init__(self):
         images = torch.load(ROOT_PATH+"/data/processed/val/images.pt")
-        #self.predict(images)
+        self.predict(images)
 
     def predict(self, images):
         model = NeuralNetwork(3)

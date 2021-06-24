@@ -19,28 +19,35 @@ from src.models.predict_model import Predict
 import numpy as np 
 import matplotlib.pyplot as plt 
 
-acc_aug = Augmentation().evaluate_prediction( method = 'geometry')
 
 acc_orig = Predict().evaluate_prediction()
 
-acc_noise = Augmentation().evaluate_prediction(method = 'noise', std = 1, mean = 0)
+acc_blur = Augmentation().evaluate_prediction( method = 'blur')
+
+acc_bright = Augmentation().evaluate_prediction(method = 'brightness')
+
+acc_sat = Augmentation().evaluate_prediction(method = 'saturate')
 
 #%%
 
-img, img_noise, img_aug  = Augmentation().Augment_images(method = ['geometry', 'noise'])
+img, img_blur, img_bright, img_sat  = Augmentation().Augment_images(method = ['blur', 'brightness', 'saturate'])
 
 plt.figure()
 plt.imshow(img.permute(1,2,0))
 plt.show()
 plt.savefig('reports/figures/original_image.png')
 
-plt.imshow(img_noise.permute(1,2,0))
+plt.imshow(img_blur.squeeze().permute(1,2,0))
 plt.show()
-plt.savefig('reports/figures/noisy_image.png')
+plt.savefig('reports/figures/blur_image.png')
 
-plt.imshow(img_aug.permute(1,2,0))
+plt.imshow(img_bright.squeeze().permute(1,2,0))
 plt.show()
-plt.savefig('reports/figures/augmented_image.png')
+plt.savefig('reports/figures/bright_image.png')
+
+plt.imshow(img_sat.squeeze().permute(1,2,0))
+plt.show()
+plt.savefig('reports/figures/sat_image.png')
 
 #%% create plot for what influence white noise has on 
 acc_noise = []
@@ -49,23 +56,72 @@ std2 = np.arange(0.1,1,0.05)
 std3 = np.arange(1, 2, 0.5)
 
 stds = np.concatenate((std1,std2,std3))
-for i in stds:
-    tmp = Augmentation().evaluate_prediction(visualize = False, method = 'noise', std = i, mean = 0)
-    acc_noise.append(tmp)    
-    
 
+
+kernel_sizes = np.arange(1, 20, 2)
+tmp = Augmentation().evaluate_prediction(visualize = False,
+                                         method = 'blur',
+                                         kernel_size = 1)
+acc_noise.append(tmp)    
+    
+tmp = Augmentation().evaluate_prediction(visualize = False,
+                                         method = 'blur',
+                                         kernel_size = 3)
+acc_noise.append(tmp)    
+
+tmp = Augmentation().evaluate_prediction(visualize = False,
+                                         method = 'blur',
+                                         kernel_size = 5)
+acc_noise.append(tmp)    
+
+tmp = Augmentation().evaluate_prediction(visualize = False,
+                                         method = 'blur',
+                                         kernel_size = 7)
+acc_noise.append(tmp)    
+
+tmp = Augmentation().evaluate_prediction(visualize = False,
+                                         method = 'blur',
+                                         kernel_size = 9)
+acc_noise.append(tmp)    
+
+tmp = Augmentation().evaluate_prediction(visualize = False,
+                                         method = 'blur',
+                                         kernel_size = 11)
+acc_noise.append(tmp)    
+
+tmp = Augmentation().evaluate_prediction(visualize = False,
+                                         method = 'blur',
+                                         kernel_size = 13)
+acc_noise.append(tmp)    
+
+tmp = Augmentation().evaluate_prediction(visualize = False,
+                                         method = 'blur',
+                                         kernel_size = 15)
+acc_noise.append(tmp)    
+
+tmp = Augmentation().evaluate_prediction(visualize = False,
+                                         method = 'blur',
+                                         kernel_size = 17)
+acc_noise.append(tmp)    
+
+tmp = Augmentation().evaluate_prediction(visualize = False,
+                                         method = 'blur',
+                                         kernel_size = 19)
+acc_noise.append(tmp)    
 #%%
 
 fig = plt.figure()
-p = plt.plot(stds, acc_noise)
-plt.hlines(acc_orig, 0, max(stds), 'r', '--')
-plt.hlines(acc_aug, 0, max(stds), 'g', '--')
+plt.plot(kernel_sizes, acc_noise)
+plt.hlines(acc_orig, 1, max(kernel_sizes), 'r', '--')
+plt.hlines(acc_bright, 1, max(kernel_sizes), 'g', '--')
+plt.hlines(acc_sat, 1, max(kernel_sizes), 'k', '--')
 plt.legend(['noisy in data',
             'acc for original data', 
-            'acc for geometric augmented'], loc = 7)
-plt.xlim([min(stds), max(stds)])
+            'acc for brighter data', 
+            'acc for saturated data'], loc = 7)
+plt.xlim([min(kernel_sizes), max(kernel_sizes)])
 plt.title('performance(accuracy) of the model on noise data')
 plt.xlabel('std for gaussian noise')
 plt.ylabel('accuracy')
 
-plt.savefig('noise_accuracy.jpg')
+plt.savefig('reports/figures/noise_accuracy.jpg')

@@ -4,7 +4,7 @@ from sklearn.manifold import Isomap
 from matplotlib import pyplot
 from torchdrift.detectors.mmd import GaussianKernel , ExpKernel, RationalQuadraticKernel
 from tabulate import tabulate
-
+import kornia as K
 # change directory 
 import os
 from dotenv import load_dotenv, find_dotenv
@@ -17,7 +17,7 @@ from src.models.load_data import Train_loader
 from src.models.model import NeuralNetwork
 MODEL_PATH = ROOT_PATH + "/src/models/trained_models"
 DATA_PATH = ROOT_PATH + "/data/processed"
-BATCH_SIZE = 10
+BATCH_SIZE = 64
 
 model = NeuralNetwork(3)
 dict_ = torch.load(MODEL_PATH+"/model_v1.pth")
@@ -31,14 +31,14 @@ feature_extractor.final = torch.nn.Flatten()
 class datadrifting():
     def __init__(self):
         self.compare_detectors()
-        self.compare_detectors(self.corruption_function)
+        self.compare_detectors(self.blur_tensor)
     
     
     def calculate_score_pvalue_detector(self, kernel = 'gaussian', corruption_function = None):
         if kernel == 'exponential':
             kernel_func = ExpKernel()
         elif kernel == 'rational':
-            kernel_func == RationalQuadraticKernel()
+            kernel_func = RationalQuadraticKernel()
         else:
             kernel_func = GaussianKernel()
         
@@ -62,33 +62,56 @@ class datadrifting():
     
     def visualize_score_pvalue(self,drift_detector, features, score, p_val):
         
-        N_base = drift_detector.base_outputs.size(0)
-        mapper = Isomap(n_components=2)
-        base_embedded = mapper.fit_transform(drift_detector.base_outputs)
-        features_embedded = mapper.transform(features.detach())
-        fig, axs = pyplot.subplots()
-        axs.scatter(base_embedded[:, 0], base_embedded[:, 1], s=2, c='r')
-        axs.scatter(features_embedded[:, 0], features_embedded[:, 1], s=4)
-        axs.set_title(f'score {score:.2f} p-value.item() {p_val:.2f}')
-        return axs
+        if len(drift_detector) > 1:
+            title_names = ['Gaussian Kernel','Exponential Kernel', 'Rationalquadratic Kernel']
+            fig, axs = pyplot.subplots(1,3, figsize = (20,5))
+            for i in range(len(drift_detector)):
+                N_base = drift_detector[i].base_outputs.size(0)
+                mapper = Isomap(n_components=2)
+                base_embedded = mapper.fit_transform(drift_detector[i].base_outputs)
+                features_embedded = mapper.transform(features[i].detach())
+                axs[i].scatter(base_embedded[:, 0], base_embedded[:, 1], s=2, c='r')
+                axs[i].scatter(features_embedded[:, 0], features_embedded[:, 1], s=4)
+                axs[i].set_title(f'{title_names[i]}: score {score[i]:.2f} p-value.item() {p_val[i]:.2f}')
+                return     
+        else:
+            N_base = drift_detector.base_outputs.size(0)
+            mapper = Isomap(n_components=2)
+            base_embedded = mapper.fit_transform(drift_detector.base_outputs)
+            features_embedded = mapper.transform(features.detach())
+            fig, axs = pyplot.subplots()
+            axs.scatter(base_embedded[:, 0], base_embedded[:, 1], s=2, c='r')
+            axs.scatter(features_embedded[:, 0], features_embedded[:, 1], s=4)
+            axs.set_title(f'score {score:.2f} p-value.item() {p_val:.2f}')
+            return 
+        
         
     def evaluate_detector(self, kernel = 'gaussian', corruption_function = None):
         drift_detector, features, score, p_val = self.calculate_score_pvalue_detector(kernel)
-        axs = self.visualize_score_pvalue(drift_detector, features, score, p_val)
+        #fig, axs = self.visualize_score_pvalue(drift_detector, features, score, p_val)
         
-        return score, p_val, axs
+        return score, p_val, drift_detector, features
     
     def compare_detectors(self,corruption_function = None):
-        score_gauss,    p_val_gauss   , axs_gauss    = self.evaluate_detector(kernel = 'gaussian', corruption_function =corruption_function )
-        score_exp,      p_val_exp     , axs_exp      = self.evaluate_detector(kernel = 'exponential', corruption_function =corruption_function )
-        score_rational, p_val_rational, axs_rational = self.evaluate_detector(kernel = 'rational', corruption_function =corruption_function )
+        score_gauss,    p_val_gauss   , drift_detector_gauss   , features_gauss    = self.evaluate_detector(kernel = 'gaussian', corruption_function =corruption_function )
+        score_exp,      p_val_exp     , drift_detector_exp     , features_exp      = self.evaluate_detector(kernel = 'exponential', corruption_function =corruption_function )
+        score_rational, p_val_rational, drift_detector_rational, features_rational = self.evaluate_detector(kernel = 'rational', corruption_function =corruption_function )
         table = [['Kernel', 'score', 'p-value'],
                  ['Gaussian', score_gauss.item(), p_val_gauss.item()],
                  ['Exponential',score_exp.item(), p_val_exp.item()],
                  ['RationalQuadratic',score_rational.item(), p_val_rational.item()]]
         print(tabulate(table))
-    def corruption_function(self, x: torch.Tensor):
-        return torchdrift.data.functional.gaussian_blur(x, severity=2)
+        drift_detectors = [drift_detector_gauss, drift_detector_exp, drift_detector_rational]
+        featuress = [features_gauss, features_exp, features_rational]
+        scores = [score_gauss, score_exp, score_rational]
+        p_vals = [p_val_gauss, p_val_exp, p_val_rational]
+        self.visualize_score_pvalue(drift_detectors, featuress, scores, p_vals)
+    
+    def blur_tensor(self, img_tensor, kernel_size = 5, sigma = (5,5)):
+        kernel_sizes = (kernel_size, kernel_size)
+        return K.filters.gaussian_blur2d(img_tensor, kernel_sizes, sigma)
+    
+    
 
 #%%
 
@@ -96,4 +119,5 @@ class datadrifting():
 
 datadrifting()
 
+#datadrifting().evaluate_detector()
 
